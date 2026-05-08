@@ -30,9 +30,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-20">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z"/></svg>
-                        </div>
+                        <img src="{{ asset('logo-ghpgvn.png') }}" alt="GHPGVN" class="w-12 h-12 object-contain">
                         <div>
                             <span class="text-xl font-bold text-amber-900 block leading-none tracking-tight">GHPGVN</span>
                             <span class="text-[10px] uppercase tracking-[3px] text-amber-600 font-bold">Ban Tăng Sự</span>
@@ -42,10 +40,9 @@
                         <a href="{{ route('application.track') }}" class="text-sm font-semibold text-gray-600 hover:text-amber-600 transition-colors">Tra cứu hồ sơ</a>
                         @if (Route::has('login'))
                             @auth
-                                <a href="{{ url('/admin') }}" class="text-sm font-semibold text-amber-900 hover:text-amber-600 transition-colors">Quản trị</a>
                                 <form method="POST" action="{{ route('logout') }}" class="inline">
                                     @csrf
-                                    <button type="submit" class="text-sm font-semibold text-red-600 hover:text-red-500 transition-colors ml-4">Đăng xuất</button>
+                                    <button type="submit" class="text-sm font-semibold text-red-600 hover:text-red-500 transition-colors">Đăng xuất</button>
                                 </form>
                             @else
                                 <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-amber-600 transition-colors">Đăng nhập</a>

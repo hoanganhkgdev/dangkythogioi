@@ -1,232 +1,420 @@
-<div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+@php
+    $field = 'w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition focus:border-amber-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20';
+    $steps = [
+        1 => ['label' => 'Cá nhân',  'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'],
+        2 => ['label' => 'Tu học',   'icon' => 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'],
+        3 => ['label' => 'Giới đàn', 'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
+        4 => ['label' => 'Nộp hồ sơ','icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'],
+        5 => ['label' => 'Hoàn tất', 'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'],
+    ];
+@endphp
+
+<div class="min-h-screen bg-gradient-to-br from-amber-50 via-white to-yellow-50/30 py-10 px-4">
+
     @guest
-        <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-amber-100 p-12 text-center">
-            <div class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-            </div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Vui lòng đăng nhập</h2>
-            <p class="text-gray-600 mb-8">Bạn cần có tài khoản để thực hiện đăng ký thọ giới trực tuyến và theo dõi hồ sơ của mình.</p>
-            <div class="flex justify-center gap-4">
-                <a href="{{ route('login') }}" class="px-8 py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 shadow-lg transition-all">Đăng nhập ngay</a>
-                <a href="{{ url('/register') }}" class="px-8 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">Đăng ký tài khoản</a>
-            </div>
+    {{-- Chưa đăng nhập --}}
+    <div class="max-w-md mx-auto">
+        <div class="text-center mb-8">
+            <img src="{{ asset('logo-ghpgvn.png') }}" alt="GHPGVN" class="w-16 h-16 object-contain mx-auto mb-4">
+            <h2 class="text-2xl font-bold text-gray-900">Đăng nhập để tiếp tục</h2>
+            <p class="mt-2 text-sm text-gray-500">Bạn cần tài khoản để đăng ký thọ giới và theo dõi hồ sơ</p>
         </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex flex-col gap-3">
+            <a href="{{ route('login') }}" class="w-full text-center py-3 bg-amber-600 text-white rounded-xl font-semibold hover:bg-amber-700 transition-all shadow-sm">Đăng nhập</a>
+            <a href="{{ route('register') }}" class="w-full text-center py-3 bg-gray-50 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition-all border border-gray-200">Tạo tài khoản mới</a>
+        </div>
+    </div>
     @else
-    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-amber-100">
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-amber-600 to-yellow-500 p-8 text-white text-center">
-            <h2 class="text-3xl font-bold uppercase tracking-widest">Đăng Ký Thọ Giới</h2>
-            <p class="mt-2 text-amber-50">Hệ thống quản lý hồ sơ Tăng Ni - GHPGVN</p>
+
+    <div class="max-w-5xl mx-auto">
+
+        {{-- Page Title --}}
+        <div class="text-center mb-8">
+            <img src="{{ asset('logo-ghpgvn.png') }}" alt="GHPGVN" class="w-16 h-16 object-contain mx-auto mb-3">
+            <h1 class="text-3xl font-bold text-gray-900">Đăng Ký Thọ Giới</h1>
+            <p class="mt-2 text-gray-500 text-sm">Giáo Hội Phật Giáo Việt Nam · Ban Tăng Sự Trung Ương</p>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="px-8 pt-8">
-            <div class="relative flex items-center justify-between">
-                <div class="absolute left-0 top-1/2 w-full h-0.5 bg-gray-200 -translate-y-1/2"></div>
-                <div class="absolute left-0 top-1/2 h-0.5 bg-amber-500 -translate-y-1/2 transition-all duration-500" style="width: {{ ($step - 1) * 25 }}%"></div>
-                
-                @foreach([1, 2, 3, 4, 5] as $s)
-                <div class="relative z-10 flex flex-col items-center">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300 {{ $step >= $s ? 'bg-amber-500 border-amber-500 text-white shadow-lg' : 'bg-white border-gray-300 text-gray-400' }}">
+        <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+
+            {{-- Sidebar Steps --}}
+            <div class="md:w-56 lg:w-64 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-100 p-6 flex md:flex-col gap-2 overflow-x-auto md:overflow-visible">
+                <div class="hidden md:block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 px-2">Các bước</div>
+                @foreach($steps as $s => $info)
+                <button
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-left shrink-0 w-full
+                        {{ $step === $s ? 'bg-amber-600 text-white shadow-sm' : ($step > $s ? 'text-gray-400' : 'text-gray-500 hover:bg-gray-100') }}"
+                    disabled
+                >
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0
+                        {{ $step === $s ? 'bg-white/20' : ($step > $s ? 'bg-gray-100' : 'bg-white border border-gray-200') }}">
                         @if($step > $s)
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                         @else
-                            {{ $s }}
+                            <svg class="w-4 h-4 {{ $step === $s ? 'text-white' : 'text-gray-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="{{ $info['icon'] }}"/>
+                            </svg>
                         @endif
                     </div>
-                </div>
+                    <span class="text-sm font-medium hidden md:block whitespace-nowrap">{{ $info['label'] }}</span>
+                </button>
                 @endforeach
-            </div>
-            <div class="flex justify-between mt-2 text-xs font-medium text-gray-500 uppercase tracking-tighter">
-                <span>Cá nhân</span>
-                <span>Tu học</span>
-                <span>Đăng ký</span>
-                <span>In & Ký</span>
-                <span>Hoàn tất</span>
-            </div>
-        </div>
 
-        <!-- Form content -->
-        <div class="p-8">
-            @if (session()->has('message'))
-                <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700">
-                    {{ session('message') }}
+                {{-- User info --}}
+                <div class="hidden md:flex items-center gap-2 mt-auto pt-6 border-t border-gray-200">
+                    <div class="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-bold text-sm shrink-0">
+                        {{ mb_substr(Auth::user()->name, 0, 1) }}
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-xs font-semibold text-gray-700 truncate">{{ Auth::user()->name }}</p>
+                        <p class="text-xs text-gray-400 truncate">{{ Auth::user()->email }}</p>
+                    </div>
                 </div>
-            @endif
+            </div>
 
-            @if($step == 1)
-                <!-- Step 1: Personal Info -->
-                <div class="space-y-6">
-                    <h3 class="text-xl font-semibold text-amber-800 border-b border-amber-100 pb-2">Thông tin cá nhân (TN01)</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Họ và tên (Khai sinh)</label>
-                            <input type="text" wire:model.live="full_name" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
-                            @error('full_name') <span class="text-red-500 text-xs text-bold">Vui lòng nhập họ tên</span> @enderror
+            {{-- Main Content --}}
+            <div class="flex-1 p-6 lg:p-10">
+
+                {{-- Step 1 --}}
+                @if($step === 1)
+                <div wire:key="step-1">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Thông tin cá nhân</h2>
+                        <p class="text-sm text-gray-500 mt-1">Nhập thông tin theo giấy khai sinh / CCCD</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Họ và tên <span class="text-red-400">*</span></label>
+                                <input type="text" wire:model="full_name" placeholder="Nguyễn Văn A" class="{{ $field }}">
+                                @error('full_name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Pháp danh</label>
+                                <input type="text" wire:model="dharma_name" placeholder="Thích ..." class="{{ $field }}">
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Pháp danh</label>
-                            <input type="text" wire:model.live="dharma_name" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Giới tính</label>
+                            <div class="flex gap-3 mt-1">
+                                @foreach(['Nam', 'Nữ'] as $g)
+                                <label class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border cursor-pointer transition-all text-sm font-medium
+                                    {{ $gender === $g ? 'border-amber-500 bg-amber-50 text-amber-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300' }}">
+                                    <input type="radio" wire:model.live="gender" value="{{ $g }}" class="sr-only">
+                                    {{ $g }}
+                                </label>
+                                @endforeach
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Giới tính</label>
-                            <select wire:model.live="gender" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Ngày sinh <span class="text-red-400">*</span></label>
+                            <input type="date" wire:model="birth_date" class="{{ $field }}">
+                            @error('birth_date') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Ngày sinh</label>
-                            <input type="date" wire:model.live="birth_date" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
-                            @error('birth_date') <span class="text-red-500 text-xs font-bold">Vui lòng chọn ngày sinh</span> @enderror
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Số CCCD / Hộ chiếu</label>
+                            <input type="text" wire:model="id_card_number" placeholder="VD: 079123456789" class="{{ $field }}">
+                            <p class="mt-1 text-xs text-gray-400">Số trên thẻ Căn cước công dân (12 chữ số)</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Số CCCD/Hộ chiếu</label>
-                            <input type="text" wire:model.live="id_card_number" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Quê quán</label>
+                            <input type="text" wire:model="native_place" placeholder="Tỉnh / Thành phố" class="{{ $field }}">
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Quê quán</label>
-                            <input type="text" wire:model.live="native_place" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Địa chỉ thường trú</label>
+                            <input type="text" wire:model="permanent_address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" class="{{ $field }}">
                         </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700">Địa chỉ thường trú</label>
-                            <input type="text" wire:model.live="permanent_address" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Nơi ở hiện tại</label>
+                            <input type="text" wire:model="current_residence" placeholder="Để trống nếu giống thường trú" class="{{ $field }}">
                         </div>
                     </div>
                 </div>
-            @elseif($step == 2)
-                <!-- Step 2: Education & Temple -->
-                <div class="space-y-6">
-                    <h3 class="text-xl font-semibold text-amber-800 border-b border-amber-100 pb-2">Trình độ & Quá trình tu học</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                {{-- Step 2 --}}
+                @elseif($step === 2)
+                <div wire:key="step-2">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Trình độ & Quá trình tu học</h2>
+                        <p class="text-sm text-gray-500 mt-1">Thông tin về quá trình xuất gia và tu học</p>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Trình độ văn hóa</label>
-                            <input type="text" wire:model="education_level" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Trình độ văn hóa</label>
+                            <input type="text" wire:model="education_level" placeholder="VD: Đại học" class="{{ $field }}">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Trình độ Phật học</label>
-                            <input type="text" wire:model="buddhist_education" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Trình độ Phật học</label>
+                            <input type="text" wire:model="buddhist_education" placeholder="VD: Trung cấp Phật học" class="{{ $field }}">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Ngày phát tâm (Xuất gia)</label>
-                            <input type="date" wire:model="ordain_date" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Ngày xuất gia</label>
+                            <input type="date" wire:model="ordain_date" class="{{ $field }}">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Nơi phát tâm</label>
-                            <input type="text" wire:model="ordain_temple" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Nơi xuất gia</label>
+                            <input type="text" wire:model="ordain_temple" placeholder="Tên chùa, tỉnh/thành" class="{{ $field }}">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Hòa thượng Bổn sư</label>
-                            <input type="text" wire:model="master_name" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
-                            @error('master_name') <span class="text-red-500 text-xs font-bold">{{ $message }}</span> @enderror
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Hòa thượng Bổn sư <span class="text-red-400">*</span></label>
+                            <input type="text" wire:model="master_name" placeholder="Pháp danh Bổn sư" class="{{ $field }}">
+                            @error('master_name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Chùa/Cơ sở hiện tại</label>
-                            <input type="text" wire:model="temple_name" class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500 sm:text-sm p-3">
-                            @error('temple_name') <span class="text-red-500 text-xs font-bold">{{ $message }}</span> @enderror
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Chùa / Cơ sở hiện tại <span class="text-red-400">*</span></label>
+                            <input type="text" wire:model="temple_name" placeholder="Tên chùa đang tu học" class="{{ $field }}">
+                            @error('temple_name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                     </div>
                 </div>
-            @elseif($step == 3)
-                <!-- Step 3: Registration Level -->
-                <div class="space-y-6">
-                    <h3 class="text-xl font-semibold text-amber-800 border-b border-amber-100 pb-2">Đăng ký thọ giới</h3>
+
+                {{-- Step 3 --}}
+                @elseif($step === 3)
+                <div wire:key="step-3" class="space-y-8">
+                    {{-- Chọn giới đàn --}}
                     <div>
-                        <label class="block text-lg font-medium text-gray-700 mb-4 text-center">Bạn muốn đăng ký thọ giới phẩm nào?</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            @foreach(['Sa di', 'Tỳ kheo', 'Sa di ni', 'Tỳ kheo ni', 'Thức xoa', 'Bồ tát giới'] as $level)
-                            <label class="flex items-center p-4 border rounded-xl cursor-pointer hover:bg-amber-50 transition-colors {{ $ordination_level == $level ? 'border-amber-500 bg-amber-50 ring-2 ring-amber-200' : 'border-gray-200' }}">
-                                <input type="radio" wire:model.live="ordination_level" value="{{ $level }}" class="w-5 h-5 text-amber-600 border-gray-300 focus:ring-amber-500">
-                                <span class="ml-3 font-medium text-gray-900">{{ $level }}</span>
-                            </label>
-                            @endforeach
+                        <div class="mb-4">
+                            <h2 class="text-xl font-bold text-gray-900">Chọn Giới Đàn <span class="text-red-400 text-base">*</span></h2>
+                            <p class="text-sm text-gray-500 mt-1">Chọn giới đàn bạn muốn tham dự</p>
                         </div>
-                        @error('ordination_level') <p class="text-red-500 text-center mt-2">{{ $message }}</p> @enderror
+
+                        @if($this->availableGioiDans->isEmpty())
+                            <div class="flex flex-col items-center justify-center py-12 rounded-2xl bg-yellow-50 border border-yellow-200 text-center">
+                                <svg class="w-12 h-12 text-yellow-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                <p class="font-semibold text-yellow-800">Chưa có Giới Đàn nào đang mở đăng ký</p>
+                                <p class="text-sm text-yellow-600 mt-1">Vui lòng liên hệ Ban Tăng Sự để biết thêm thông tin.</p>
+                            </div>
+                        @else
+                            <div class="space-y-2.5">
+                                @foreach($this->availableGioiDans as $gioiDan)
+                                <label class="group flex items-start gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all
+                                    {{ $gioi_dan_id == $gioiDan->id ? 'border-amber-500 bg-amber-50' : 'border-gray-100 bg-gray-50 hover:border-amber-200 hover:bg-amber-50/40' }}">
+                                    <div class="mt-0.5">
+                                        <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all
+                                            {{ $gioi_dan_id == $gioiDan->id ? 'border-amber-500 bg-amber-500' : 'border-gray-300 group-hover:border-amber-400' }}">
+                                            @if($gioi_dan_id == $gioiDan->id)
+                                                <div class="w-2 h-2 rounded-full bg-white"></div>
+                                            @endif
+                                        </div>
+                                        <input type="radio" wire:model.live="gioi_dan_id" value="{{ $gioiDan->id }}" class="sr-only">
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-start justify-between gap-2 flex-wrap">
+                                            <span class="font-bold text-gray-900">{{ $gioiDan->name }}</span>
+                                            <span class="shrink-0 text-xs px-2 py-0.5 bg-green-100 text-green-700 rounded-full font-medium">Đang mở</span>
+                                        </div>
+                                        <div class="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
+                                            <span class="flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                                {{ $gioiDan->location }}
+                                            </span>
+                                            <span class="flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                                {{ $gioiDan->start_date->format('d/m/Y') }} – {{ $gioiDan->end_date->format('d/m/Y') }}
+                                            </span>
+                                        </div>
+                                        <div class="mt-2 flex flex-wrap gap-1">
+                                            @foreach($gioiDan->ordination_levels as $level)
+                                                <span class="text-xs px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full font-medium">{{ $level }}</span>
+                                            @endforeach
+                                        </div>
+                                        @if($gioiDan->description)
+                                            <p class="mt-1.5 text-xs text-gray-400">{{ $gioiDan->description }}</p>
+                                        @endif
+                                    </div>
+                                </label>
+                                @endforeach
+                            </div>
+                        @endif
+                        @error('gioi_dan_id') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
+                    </div>
+
+                    {{-- Chọn giới phẩm --}}
+                    <div>
+                        <div class="mb-4">
+                            <h2 class="text-xl font-bold text-gray-900">Giới phẩm <span class="text-red-400 text-base">*</span></h2>
+                            <p class="text-sm text-gray-500 mt-1">
+                                @if($gioi_dan_id && $this->selectedGioiDan)
+                                    Giới phẩm có tại <strong>{{ $this->selectedGioiDan->name }}</strong>
+                                @else
+                                    Chọn giới đàn phía trên để xem giới phẩm phù hợp
+                                @endif
+                            </p>
+                        </div>
+
+                        @if($gioi_dan_id && $this->selectedGioiDan)
+                            @php $levels = $this->selectedGioiDan->ordination_levels ?? []; @endphp
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                                @foreach($levels as $level)
+                                <label class="group flex flex-col items-center gap-2 p-4 rounded-2xl border-2 cursor-pointer transition-all
+                                    {{ $ordination_level === $level ? 'border-amber-500 bg-amber-50' : 'border-gray-100 bg-gray-50 hover:border-amber-200 hover:bg-amber-50/40' }}">
+                                    <input type="radio" wire:model.live="ordination_level" value="{{ $level }}" class="sr-only">
+                                    <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-all
+                                        {{ $ordination_level === $level ? 'bg-amber-500 text-white' : 'bg-white text-gray-400 border border-gray-200 group-hover:border-amber-300' }}">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                                    </div>
+                                    <span class="text-sm font-semibold {{ $ordination_level === $level ? 'text-amber-700' : 'text-gray-700' }}">{{ $level }}</span>
+                                </label>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="py-8 rounded-2xl bg-gray-50 border border-dashed border-gray-200 text-center text-sm text-gray-400">
+                                Vui lòng chọn giới đàn trước
+                            </div>
+                        @endif
+                        @error('ordination_level') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
                 </div>
-            @elseif($step == 4)
-                <!-- Step 4: Print & Upload Instruction -->
-                <div class="text-center py-6">
-                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900">Thông tin đã được ghi nhận!</h3>
-                    <p class="mt-4 text-gray-600 mb-8">Bây giờ bạn cần thực hiện các bước sau để hoàn thành thủ tục:</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <span class="block text-2xl font-bold text-amber-600 mb-2">1. IN ĐƠN</span>
-                            <p class="text-xs text-gray-500">In mẫu đơn TN01 từ hệ thống</p>
-                        </div>
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <span class="block text-2xl font-bold text-amber-600 mb-2">2. XÁC NHẬN</span>
-                            <p class="text-xs text-gray-500">Lấy chữ ký Bổn sư và dấu Ban Trị Sự</p>
-                        </div>
-                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                            <span class="block text-2xl font-bold text-amber-600 mb-2">3. TẢI LÊN</span>
-                            <p class="text-xs text-gray-500">Chụp ảnh/Scan và tải lên hệ thống</p>
-                        </div>
+
+                {{-- Step 4 --}}
+                @elseif($step === 4)
+                <div wire:key="step-4">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-gray-900">Nộp hồ sơ</h2>
+                        <p class="text-sm text-gray-500 mt-1">Thông tin đã được ghi nhận. Hoàn tất bằng cách nộp bản quét đơn có chữ ký.</p>
                     </div>
 
-                    <div class="flex justify-center gap-4 mb-10">
-                        <a href="{{ route('application.print', $applicationId) }}" target="_blank" class="px-8 py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 shadow-lg">In mẫu đơn TN01 (PDF)</a>
-                        <button wire:click="editApplication" class="px-8 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">Sửa lại thông tin</button>
+                    {{-- 3 steps instruction --}}
+                    <div class="grid grid-cols-3 gap-3 mb-8">
+                        @foreach([
+                            ['bg-blue-50 text-blue-600 border-blue-100', 'M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z', '1. In đơn', 'In mẫu TN01'],
+                            ['bg-amber-50 text-amber-600 border-amber-100', 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', '2. Xác nhận', 'Lấy chữ ký & dấu'],
+                            ['bg-green-50 text-green-600 border-green-100', 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12', '3. Tải lên', 'Nộp bản quét'],
+                        ] as [$cls, $path, $title, $desc])
+                        <div class="flex flex-col items-center text-center gap-2 p-4 rounded-2xl border {{ $cls }}">
+                            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border {{ $cls }}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="{{ $path }}"/></svg>
+                            </div>
+                            <span class="text-xs font-bold">{{ $title }}</span>
+                            <span class="text-xs opacity-70">{{ $desc }}</span>
+                        </div>
+                        @endforeach
                     </div>
 
-                    <div class="max-w-md mx-auto p-6 bg-amber-50 rounded-2xl border-2 border-dashed border-amber-200">
-                        <h4 class="font-bold text-amber-900 mb-4 uppercase">Tải lên bản quét có dấu</h4>
-                        <input type="file" wire:model="scanned_form" class="hidden" id="file-upload">
-                        <label for="file-upload" class="cursor-pointer block p-4 bg-white rounded-xl border border-amber-200 hover:bg-amber-100 transition-colors">
+                    <div class="flex flex-wrap gap-3 mb-8">
+                        <a href="{{ route('application.print', $applicationId) }}" target="_blank"
+                           class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-600 text-white rounded-xl text-sm font-semibold hover:bg-amber-700 shadow-sm transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                            In mẫu đơn TN01
+                        </a>
+                        <button wire:click="editApplication"
+                                class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-200 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            Sửa thông tin
+                        </button>
+                    </div>
+
+                    {{-- Upload zone --}}
+                    <div class="rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 p-6">
+                        <h3 class="text-sm font-semibold text-gray-700 mb-4">Tải lên bản quét đơn đã ký & đóng dấu</h3>
+                        <input type="file" wire:model="scanned_form" id="file-upload" class="sr-only" accept=".jpg,.jpeg,.png,.pdf">
+                        <label for="file-upload" class="group flex flex-col items-center justify-center gap-3 p-8 rounded-xl border-2 border-dashed cursor-pointer transition-all
+                            {{ $scanned_form ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:border-amber-400 hover:bg-amber-50/30' }}">
                             @if($scanned_form)
-                                <span class="text-green-600 font-medium">Đã chọn: {{ $scanned_form->getClientOriginalName() }}</span>
+                                <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span class="text-sm font-semibold text-green-700">{{ $scanned_form->getClientOriginalName() }}</span>
+                                <span class="text-xs text-green-500">Nhấn để chọn file khác</span>
                             @else
-                                <span class="text-amber-700">Chọn ảnh hoặc PDF bản quét</span>
+                                <svg class="w-10 h-10 text-gray-300 group-hover:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                <div class="text-center">
+                                    <span class="text-sm font-semibold text-gray-600">Chọn file hoặc kéo thả vào đây</span>
+                                    <p class="text-xs text-gray-400 mt-1">JPG, PNG hoặc PDF · Tối đa 10MB</p>
+                                </div>
                             @endif
                         </label>
-                        @error('scanned_form') <p class="text-red-500 text-xs mt-2">{{ $message }}</p> @enderror
-                        
-                        <button wire:click="uploadDocument" wire:loading.attr="disabled" class="mt-4 w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-all disabled:bg-gray-400">
-                            <span wire:loading.remove>Gửi bản quét & Hoàn tất</span>
-                            <span wire:loading>Đang tải lên...</span>
+                        <div wire:loading wire:target="scanned_form" class="mt-3 flex items-center gap-2 text-xs text-amber-600">
+                            <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                            Đang xử lý...
+                        </div>
+                        @error('scanned_form') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
+
+                        <button wire:click="uploadDocument" wire:loading.attr="disabled" wire:target="uploadDocument"
+                                class="mt-4 w-full py-3 bg-green-600 text-white rounded-xl text-sm font-bold hover:bg-green-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                            <span wire:loading.remove wire:target="uploadDocument">
+                                <svg class="w-4 h-4 inline -mt-0.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                Xác nhận & Hoàn tất nộp hồ sơ
+                            </span>
+                            <span wire:loading wire:target="uploadDocument" class="flex items-center gap-2">
+                                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                                Đang tải lên...
+                            </span>
                         </button>
                     </div>
                 </div>
-            @elseif($step == 5)
-                <!-- Final Step: Success -->
-                <div class="text-center py-10">
-                    <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+
+                {{-- Step 5 --}}
+                @elseif($step === 5)
+                <div wire:key="step-5" class="flex flex-col items-center justify-center py-10 text-center">
+                    <div class="relative mb-6">
+                        <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
+                            <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <div class="absolute -right-1 -top-1 w-6 h-6 rounded-full bg-amber-400 border-2 border-white flex items-center justify-center">
+                            <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900">Nộp hồ sơ thành công!</h3>
-                    <p class="mt-4 text-gray-600 max-w-sm mx-auto">Hồ sơ của bạn đã được chuyển đến Ban Trị Sự để chờ xét duyệt. Bạn có thể tra cứu trạng thái bất cứ lúc nào.</p>
-                    <div class="mt-8 flex justify-center gap-4">
-                        <a href="{{ route('application.track', ['search' => $applicationId]) }}" class="px-6 py-3 bg-amber-600 text-white rounded-lg font-bold hover:bg-amber-700 shadow-lg">Kiểm tra trạng thái</a>
-                        <a href="/" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200">Về trang chủ</a>
+                    <h2 class="text-2xl font-bold text-gray-900">Nộp hồ sơ thành công!</h2>
+                    <p class="mt-3 text-gray-500 max-w-sm">Hồ sơ của bạn đã được gửi đến Ban Trị Sự. Bạn sẽ được thông báo khi có kết quả xét duyệt.</p>
+
+                    <div class="mt-6 px-5 py-3 bg-amber-50 border border-amber-200 rounded-2xl text-sm text-amber-800">
+                        <span class="font-semibold">Mã hồ sơ:</span> #{{ $applicationId }}
+                    </div>
+
+                    <div class="mt-8 flex flex-wrap justify-center gap-3">
+                        <a href="{{ route('application.track') }}"
+                           class="inline-flex items-center gap-2 px-6 py-2.5 bg-amber-600 text-white rounded-xl font-semibold text-sm hover:bg-amber-700 shadow-sm transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            Tra cứu hồ sơ
+                        </a>
+                        <a href="/"
+                           class="inline-flex items-center gap-2 px-6 py-2.5 bg-gray-100 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-200 transition-all">
+                            Về trang chủ
+                        </a>
                     </div>
                 </div>
-            @endif
-
-            <!-- Navigation Buttons -->
-            @if($step < 4)
-            <div class="mt-10 flex justify-between">
-                @if($step > 1)
-                    <button wire:click="prevStep" class="px-8 py-3 bg-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-300 transition-all">Quay lại</button>
-                @else
-                    <div></div>
                 @endif
 
-                @if($step < 3)
-                    <button wire:click="nextStep" class="px-8 py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 shadow-lg transition-all">Tiếp tục</button>
-                @else
-                    <button wire:click="submit" class="px-10 py-3 bg-amber-600 text-white rounded-xl font-bold hover:bg-amber-700 shadow-xl transition-all">Gửi hồ sơ</button>
+                {{-- Navigation --}}
+                @if($step < 4)
+                <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
+                    @if($step > 1)
+                        <button wire:click="prevStep"
+                                class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-200 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                            Quay lại
+                        </button>
+                    @else
+                        <div></div>
+                    @endif
+
+                    @if($step < 3)
+                        <button wire:click="nextStep"
+                                class="inline-flex items-center gap-2 px-6 py-2.5 bg-amber-600 text-white rounded-xl text-sm font-semibold hover:bg-amber-700 shadow-sm transition-all">
+                            Tiếp tục
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    @else
+                        <button wire:click="submit" wire:loading.attr="disabled" wire:target="submit"
+                                class="inline-flex items-center gap-2 px-7 py-2.5 bg-amber-600 text-white rounded-xl text-sm font-bold hover:bg-amber-700 shadow-sm transition-all disabled:opacity-60">
+                            <span wire:loading.remove wire:target="submit">
+                                Gửi hồ sơ
+                                <svg class="w-4 h-4 inline ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            </span>
+                            <span wire:loading wire:target="submit" class="flex items-center gap-2">
+                                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                                Đang lưu...
+                            </span>
+                        </button>
+                    @endif
+                </div>
                 @endif
-            </div>
-            @endif
-        </div>
-    </div>
-    
-    <div class="mt-8 text-center text-gray-400 text-xs">
-        &copy; 2026 Giáo hội Phật giáo Việt Nam - Ban Tăng Sự Trung Ương
+
+            </div>{{-- end main content --}}
+        </div>{{-- end card --}}
+
+        <p class="mt-6 text-center text-xs text-gray-400">
+            &copy; {{ date('Y') }} Giáo hội Phật giáo Việt Nam · Ban Tăng Sự Trung Ương
+        </p>
     </div>
     @endauth
 </div>

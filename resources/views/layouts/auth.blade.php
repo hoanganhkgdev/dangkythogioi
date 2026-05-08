@@ -19,9 +19,7 @@
         <div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div class="sm:mx-auto sm:w-full sm:max-w-md">
                 <a href="/" class="flex justify-center mb-6">
-                    <div class="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z"/></svg>
-                    </div>
+                    <img src="{{ asset('logo-ghpgvn.png') }}" alt="GHPGVN" class="w-16 h-16 object-contain">
                 </a>
             </div>
 

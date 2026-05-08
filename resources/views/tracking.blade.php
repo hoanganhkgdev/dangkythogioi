@@ -43,11 +43,9 @@
                     <div class="flex items-center gap-6">
                         <a href="/" class="text-sm font-semibold text-gray-600 hover:text-amber-600 transition-colors">Đăng ký</a>
                         @if (Route::has('login'))
-                            @auth
-                                <a href="{{ url('/admin') }}" class="text-sm font-semibold text-amber-900 hover:text-amber-600 transition-colors">Quản trị</a>
-                            @else
+                            @guest
                                 <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-amber-600 transition-colors">Đăng nhập</a>
-                            @endauth
+                            @endguest
                         @endif
                     </div>
                 </div>

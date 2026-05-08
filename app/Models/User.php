@@ -55,4 +55,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->role === 'admin';
     }
+
+    public function applications()
+    {
+        return $this->hasMany(ThoGioiApplication::class);
+    }
 }

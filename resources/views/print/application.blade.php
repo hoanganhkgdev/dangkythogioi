@@ -48,10 +48,6 @@
             (Ký và ghi rõ họ tên)
         </div>
         <div class="signature-box">
-            <strong>BAN TRỊ SỰ HUYỆN</strong><br>
-            (Ký tên, đóng dấu)
-        </div>
-        <div class="signature-box">
             <strong>NGƯỜI LÀM ĐƠN</strong><br>
             (Ký và ghi rõ họ tên)
         </div>

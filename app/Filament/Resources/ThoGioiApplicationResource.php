@@ -35,6 +35,12 @@ class ThoGioiApplicationResource extends Resource
                             ->relationship('user', 'name')
                             ->label('Người dùng (Tài khoản)')
                             ->required(),
+                        Forms\Components\Select::make('gioi_dan_id')
+                            ->relationship('gioiDan', 'name')
+                            ->label('Giới Đàn đăng ký')
+                            ->placeholder('Chưa chọn giới đàn')
+                            ->searchable()
+                            ->preload(),
                         Forms\Components\TextInput::make('full_name')
                             ->label('Họ và tên (Khai sinh)')
                             ->required(),
@@ -56,13 +62,16 @@ class ThoGioiApplicationResource extends Resource
                                     ->label('Ngày cấp'),
                                 Forms\Components\TextInput::make('id_card_place')
                                     ->label('Nơi cấp'),
-                            ]),
+                            ])
+                            ->columnSpanFull(),
                         Forms\Components\TextInput::make('native_place')
                             ->label('Quê quán'),
                         Forms\Components\TextInput::make('permanent_address')
-                            ->label('Hộ khẩu thường trú'),
+                            ->label('Hộ khẩu thường trú')
+                            ->columnSpanFull(),
                         Forms\Components\TextInput::make('current_residence')
-                            ->label('Nơi ở hiện tại'),
+                            ->label('Nơi ở hiện tại')
+                            ->columnSpanFull(),
                     ])->columns(2),
                 
                 Forms\Components\Section::make('Trình độ & Quá trình tu học')
@@ -111,6 +120,12 @@ class ThoGioiApplicationResource extends Resource
                             ->maxSize(10240)
                             ->openable()
                             ->columnSpanFull(),
+                        Forms\Components\FileUpload::make('photo_path')
+                            ->label('Ảnh chân dung (80x105mm, dùng in chứng điệp)')
+                            ->directory('application-photos')
+                            ->image()
+                            ->imageEditor()
+                            ->maxSize(5120),
                         Forms\Components\TextInput::make('certificate_id')
                             ->label('Số Chứng điệp cấp')
                             ->disabled()
@@ -123,6 +138,11 @@ class ThoGioiApplicationResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('gioiDan.name')
+                    ->label('Giới Đàn')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('Chưa chọn'),
                 Tables\Columns\TextColumn::make('full_name')
                     ->label('Họ tên')
                     ->searchable(),
@@ -150,6 +170,9 @@ class ThoGioiApplicationResource extends Resource
                     ->sortable(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('gioi_dan_id')
+                    ->label('Giới Đàn')
+                    ->relationship('gioiDan', 'name'),
                 Tables\Filters\SelectFilter::make('ordination_level')
                     ->label('Cấp bậc')
                     ->options([
