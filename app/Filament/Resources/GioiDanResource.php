@@ -4,11 +4,13 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\GioiDanResource\Pages;
 use App\Models\GioiDan;
+use App\Models\Tinh;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class GioiDanResource extends Resource
 {
@@ -20,12 +22,42 @@ class GioiDanResource extends Resource
     protected static ?string $pluralModelLabel = 'Danh sách Giới Đàn';
     protected static ?int $navigationSort = 1;
 
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        return $user?->isAdmin() || $user?->isQuanLyTinh() || $user?->isQuanLyGioiDan() ?? false;
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user?->isQuanLyTinh()) {
+            return parent::getEloquentQuery()
+                ->whereIn('tinh_id', $user->tinhs()->pluck('tinhs.id'));
+        }
+
+        if ($user?->isQuanLyGioiDan()) {
+            return parent::getEloquentQuery()
+                ->whereIn('id', $user->gioiDans()->pluck('gioi_dans.id'));
+        }
+
+        return parent::getEloquentQuery();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make('Thông tin Giới Đàn')
                     ->schema([
+                        Forms\Components\Select::make('tinh_id')
+                            ->label('Tỉnh / Thành phố')
+                            ->options(Tinh::orderBy('name')->pluck('name', 'id'))
+                            ->nullable()
+                            ->searchable()
+                            ->placeholder('— Chọn tỉnh/thành phố —')
+                            ->columnSpanFull(),
                         Forms\Components\TextInput::make('name')
                             ->label('Tên Giới Đàn')
                             ->placeholder('VD: Đại Giới Đàn Thiện Hoa 2026')
@@ -134,6 +166,11 @@ class GioiDanResource extends Resource
                     ->label('Tên Giới Đàn')
                     ->searchable()
                     ->weight('bold'),
+                Tables\Columns\TextColumn::make('tinh.name')
+                    ->label('Tỉnh')
+                    ->searchable()
+                    ->sortable()
+                    ->placeholder('—'),
                 Tables\Columns\TextColumn::make('location')
                     ->label('Địa điểm')
                     ->searchable(),

@@ -3,9 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\GioiDan;
+use App\Models\Tinh;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -20,6 +23,11 @@ class UserResource extends Resource
     protected static ?string $modelLabel = 'Tài khoản';
     protected static ?string $pluralModelLabel = 'Danh sách tài khoản';
     protected static ?int $navigationSort = 3;
+
+    public static function canViewAny(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -40,15 +48,44 @@ class UserResource extends Resource
                         Forms\Components\Select::make('role')
                             ->label('Vai trò')
                             ->options([
-                                'user' => 'Người dùng',
+                                'user' => 'Giới tử (người dùng)',
+                                'quan_ly_gioi_dan' => 'Quản lý Giới Đàn',
+                                'quan_ly_tinh' => 'Quản lý Tỉnh',
                                 'admin' => 'Quản trị viên',
                             ])
                             ->required()
-                            ->default('user'),
+                            ->default('user')
+                            ->live(),
                         Forms\Components\DateTimePicker::make('email_verified_at')
                             ->label('Xác thực email lúc')
                             ->nullable(),
                     ])->columns(2),
+
+                Forms\Components\Section::make('Tỉnh phụ trách')
+                    ->description('Chọn các tỉnh/thành phố mà tài khoản này được phép quản lý')
+                    ->schema([
+                        Forms\Components\Select::make('tinhs')
+                            ->label('Tỉnh được quản lý')
+                            ->relationship('tinhs', 'name')
+                            ->multiple()
+                            ->searchable()
+                            ->preload()
+                            ->columnSpanFull(),
+                    ])
+                    ->visible(fn (Get $get) => $get('role') === 'quan_ly_tinh'),
+
+                Forms\Components\Section::make('Giới Đàn phụ trách')
+                    ->description('Chọn các giới đàn mà tài khoản này được phép quản lý hồ sơ')
+                    ->schema([
+                        Forms\Components\Select::make('gioiDans')
+                            ->label('Giới Đàn được quản lý')
+                            ->relationship('gioiDans', 'name')
+                            ->multiple()
+                            ->searchable()
+                            ->preload()
+                            ->columnSpanFull(),
+                    ])
+                    ->visible(fn (Get $get) => $get('role') === 'quan_ly_gioi_dan'),
 
                 Forms\Components\Section::make('Mật khẩu')
                     ->description(fn (string $operation) => $operation === 'edit' ? 'Để trống nếu không muốn đổi mật khẩu' : '')
@@ -88,8 +125,18 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('role')
                     ->label('Vai trò')
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => $state === 'admin' ? 'Quản trị viên' : 'Người dùng')
-                    ->color(fn (string $state): string => $state === 'admin' ? 'warning' : 'gray'),
+                    ->formatStateUsing(fn (string $state): string => match($state) {
+                        'admin' => 'Quản trị viên',
+                        'quan_ly_tinh' => 'Quản lý Tỉnh',
+                        'quan_ly_gioi_dan' => 'Quản lý Giới Đàn',
+                        default => 'Giới tử',
+                    })
+                    ->color(fn (string $state): string => match($state) {
+                        'admin' => 'danger',
+                        'quan_ly_tinh' => 'warning',
+                        'quan_ly_gioi_dan' => 'info',
+                        default => 'gray',
+                    }),
                 Tables\Columns\TextColumn::make('applications_count')
                     ->label('Số hồ sơ')
                     ->counts('applications')
@@ -113,7 +160,9 @@ class UserResource extends Resource
                 Tables\Filters\SelectFilter::make('role')
                     ->label('Vai trò')
                     ->options([
-                        'user' => 'Người dùng',
+                        'user' => 'Giới tử (người dùng)',
+                        'quan_ly_gioi_dan' => 'Quản lý Giới Đàn',
+                        'quan_ly_tinh' => 'Quản lý Tỉnh',
                         'admin' => 'Quản trị viên',
                     ]),
             ])

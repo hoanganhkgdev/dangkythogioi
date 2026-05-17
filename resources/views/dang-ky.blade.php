@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Tra cứu hồ sơ – GHPGVN</title>
+        <title>Đăng Ký Thọ Giới – GHPGVN</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
@@ -37,7 +37,7 @@
                             Trang chủ
                         </a>
                         <a href="{{ route('application.track') }}"
-                           class="px-3 py-2 rounded-lg text-sm font-semibold bg-white/20 text-white transition-all">
+                           class="px-3 py-2 rounded-lg text-sm font-semibold text-amber-100 hover:bg-white/10 hover:text-white transition-all">
                             Tra cứu hồ sơ
                         </a>
                     </nav>
@@ -63,9 +63,6 @@
                         @else
                             <a href="{{ route('login') }}"
                                class="inline-flex items-center gap-1.5 bg-white text-amber-700 hover:bg-amber-50 text-sm font-bold px-4 py-2 rounded-lg transition-all shadow-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
-                                </svg>
                                 Đăng nhập
                             </a>
                         @endauth
@@ -76,15 +73,14 @@
         </header>
 
         {{-- Hero strip --}}
-        <div class="py-10 text-center" style="background: linear-gradient(145deg, #f59e0b 0%, #d97706 50%, #b45309 100%)">
-            <div class="absolute inset-0 pointer-events-none overflow-hidden"></div>
-            <h1 class="text-2xl sm:text-3xl font-black text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,0.15)">Tra cứu hồ sơ thọ giới</h1>
-            <p class="text-amber-100/90 text-sm mt-1">Nhập số CCCD hoặc mã hồ sơ để kiểm tra trạng thái</p>
+        <div class="py-8 text-center" style="background: linear-gradient(145deg, #f59e0b 0%, #d97706 50%, #b45309 100%)">
+            <h1 class="text-2xl sm:text-3xl font-black text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,0.15)">Đăng ký Thọ Giới</h1>
+            <p class="text-amber-100/90 text-sm mt-1">Giáo Hội Phật Giáo Việt Nam – Ban Tăng Sự Trung Ương</p>
         </div>
 
         {{-- Content --}}
-        <main class="flex-1 py-10">
-            @livewire('status-tracking')
+        <main class="flex-1 py-8">
+            @livewire('registration-form')
         </main>
 
         @include('partials.footer')

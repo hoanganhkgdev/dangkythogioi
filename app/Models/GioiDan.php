@@ -15,9 +15,19 @@ class GioiDan extends Model
         'ton_chung' => 'array',
     ];
 
+    public function tinh()
+    {
+        return $this->belongsTo(Tinh::class);
+    }
+
     public function applications()
     {
         return $this->hasMany(ThoGioiApplication::class);
+    }
+
+    public function managers()
+    {
+        return $this->belongsToMany(User::class);
     }
 
     public function getStatusLabelAttribute(): string

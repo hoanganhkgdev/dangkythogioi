@@ -44,7 +44,44 @@ class RegistrationForm extends Component
 
         if ($existing) {
             $this->applicationId = $existing->id;
+            $this->gioi_dan_id   = $existing->gioi_dan_id;
             $this->step = $existing->status === 'pending_approval' ? 5 : 4;
+            return;
+        }
+
+        if ($gioiDanId = request()->query('gioi_dan_id')) {
+            $this->gioi_dan_id = (int) $gioiDanId;
+        } else {
+            $this->redirectRoute('home');
+            return;
+        }
+
+        $this->prefillFromProfile(Auth::user());
+    }
+
+    private function prefillFromProfile($user): void
+    {
+        $map = [
+            'full_name'         => $user->name,
+            'dharma_name'       => $user->dharma_name ?? '',
+            'gender'            => $user->gender ?? 'Nam',
+            'birth_date'        => $user->birth_date?->format('Y-m-d') ?? '',
+            'id_card_number'    => $user->id_card_number ?? '',
+            'native_place'      => $user->native_place ?? '',
+            'permanent_address' => $user->permanent_address ?? '',
+            'current_residence' => $user->current_residence ?? '',
+            'education_level'   => $user->education_level ?? '',
+            'buddhist_education'=> $user->buddhist_education ?? '',
+            'ordain_date'       => $user->ordain_date?->format('Y-m-d') ?? '',
+            'ordain_temple'     => $user->ordain_temple ?? '',
+            'master_name'       => $user->master_name ?? '',
+            'temple_name'       => $user->temple_name ?? '',
+        ];
+
+        foreach ($map as $field => $value) {
+            if (empty($this->$field) && !empty($value)) {
+                $this->$field = $value;
+            }
         }
     }
 

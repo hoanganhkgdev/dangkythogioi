@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ThoGioiApplicationResource extends Resource
@@ -25,6 +26,38 @@ class ThoGioiApplicationResource extends Resource
     
     protected static ?string $pluralModelLabel = 'Danh sách Hồ sơ';
 
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user?->isQuanLyTinh()) {
+            return parent::getEloquentQuery()
+                ->whereHas('gioiDan', fn (Builder $q) => $q->whereIn('tinh_id', $user->tinhs()->pluck('tinhs.id')));
+        }
+
+        if ($user?->isQuanLyGioiDan()) {
+            return parent::getEloquentQuery()
+                ->whereIn('gioi_dan_id', $user->gioiDans()->pluck('gioi_dans.id'));
+        }
+
+        return parent::getEloquentQuery();
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -34,60 +67,78 @@ class ThoGioiApplicationResource extends Resource
                         Forms\Components\Select::make('user_id')
                             ->relationship('user', 'name')
                             ->label('Người dùng (Tài khoản)')
-                            ->required(),
+                            ->required()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\Select::make('gioi_dan_id')
                             ->relationship('gioiDan', 'name')
                             ->label('Giới Đàn đăng ký')
                             ->placeholder('Chưa chọn giới đàn')
                             ->searchable()
-                            ->preload(),
+                            ->preload()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('full_name')
                             ->label('Họ và tên (Khai sinh)')
-                            ->required(),
+                            ->required()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('dharma_name')
-                            ->label('Pháp danh'),
+                            ->label('Pháp danh')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\Select::make('gender')
                             ->label('Giới tính')
                             ->options(['Nam' => 'Nam', 'Nữ' => 'Nữ'])
                             ->default('Nam')
-                            ->required(),
+                            ->required()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\DatePicker::make('birth_date')
                             ->label('Ngày sinh')
-                            ->required(),
+                            ->required()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\TextInput::make('id_card_number')
-                                    ->label('Số CCCD'),
+                                    ->label('Số CCCD')
+                                    ->disabled(fn () => auth()->user()?->isQuanLy()),
                                 Forms\Components\DatePicker::make('id_card_date')
-                                    ->label('Ngày cấp'),
+                                    ->label('Ngày cấp')
+                                    ->disabled(fn () => auth()->user()?->isQuanLy()),
                                 Forms\Components\TextInput::make('id_card_place')
-                                    ->label('Nơi cấp'),
+                                    ->label('Nơi cấp')
+                                    ->disabled(fn () => auth()->user()?->isQuanLy()),
                             ])
                             ->columnSpanFull(),
                         Forms\Components\TextInput::make('native_place')
-                            ->label('Quê quán'),
+                            ->label('Quê quán')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('permanent_address')
                             ->label('Hộ khẩu thường trú')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('current_residence')
                             ->label('Nơi ở hiện tại')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                     ])->columns(2),
-                
+
                 Forms\Components\Section::make('Trình độ & Quá trình tu học')
                     ->schema([
                         Forms\Components\TextInput::make('education_level')
-                            ->label('Trình độ văn hóa'),
+                            ->label('Trình độ văn hóa')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('buddhist_education')
-                            ->label('Trình độ Phật học'),
+                            ->label('Trình độ Phật học')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\DatePicker::make('ordain_date')
-                            ->label('Ngày phát tâm tu học'),
+                            ->label('Ngày phát tâm tu học')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('ordain_temple')
-                            ->label('Nơi phát tâm tu học'),
+                            ->label('Nơi phát tâm tu học')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('master_name')
-                            ->label('Hòa thượng Bổn sư'),
+                            ->label('Hòa thượng Bổn sư')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\TextInput::make('temple_name')
-                            ->label('Chùa/Cơ sở hiện tại'),
+                            ->label('Chùa/Cơ sở hiện tại')
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Trạng thái đăng ký thọ giới')
@@ -102,7 +153,8 @@ class ThoGioiApplicationResource extends Resource
                                 'Thức xoa' => 'Thức xoa',
                                 'Bồ tát giới' => 'Bồ tát giới',
                             ])
-                            ->required(),
+                            ->required()
+                            ->disabled(fn () => auth()->user()?->isQuanLy()),
                         Forms\Components\Select::make('status')
                             ->label('Trạng thái hồ sơ')
                             ->options([
@@ -203,7 +255,8 @@ class ThoGioiApplicationResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()?->isAdmin()),
                 ]),
             ]);
     }
