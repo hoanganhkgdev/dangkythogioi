@@ -208,13 +208,21 @@ class ThoGioiApplicationResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Trạng thái')
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'pending_document' => 'Chờ bổ sung bản scan',
+                        'pending_approval' => 'Đang chờ duyệt',
+                        'approved'         => 'Đã duyệt – Được thọ giới',
+                        'passed'           => 'Đã thọ giới – Cấp chứng điệp',
+                        'rejected'         => 'Từ chối',
+                        default            => $state,
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'pending_document' => 'gray',
                         'pending_approval' => 'warning',
-                        'approved' => 'info',
-                        'passed' => 'success',
-                        'rejected' => 'danger',
-                        default => 'gray',
+                        'approved'         => 'info',
+                        'passed'           => 'success',
+                        'rejected'         => 'danger',
+                        default            => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Ngày đăng ký')
