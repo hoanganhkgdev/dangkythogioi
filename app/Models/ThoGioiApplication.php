@@ -9,10 +9,11 @@ class ThoGioiApplication extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'birth_date'   => 'date',
-        'ordain_date'  => 'date',
-        'id_card_date' => 'date',
-        'approved_at'  => 'datetime',
+        'birth_date'       => 'date',
+        'ordain_date'      => 'date',
+        'sa_di_ordain_date'=> 'date',
+        'id_card_date'     => 'date',
+        'approved_at'      => 'datetime',
     ];
 
     public function user()

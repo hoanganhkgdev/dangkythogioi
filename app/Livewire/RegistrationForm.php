@@ -21,6 +21,7 @@ class RegistrationForm extends Component
     public string $gender = 'Nam';
     public string $birth_date = '';
     public string $id_card_number = '';
+    public string $id_card_date = '';
     public string $native_place = '';
     public string $permanent_address = '';
     public string $current_residence = '';
@@ -28,6 +29,9 @@ class RegistrationForm extends Component
     public string $buddhist_education = '';
     public string $ordain_date = '';
     public string $ordain_temple = '';
+    public string $sa_di_ordain_date = '';
+    public string $sa_di_gioi_dan = '';
+    public string $sa_di_tinh = '';
     public string $master_name = '';
     public string $temple_name = '';
     public string $ordination_level = '';
@@ -67,6 +71,7 @@ class RegistrationForm extends Component
             'gender'            => $user->gender ?? 'Nam',
             'birth_date'        => $user->birth_date?->format('Y-m-d') ?? '',
             'id_card_number'    => $user->id_card_number ?? '',
+            'id_card_date'      => $user->id_card_date?->format('Y-m-d') ?? '',
             'native_place'      => $user->native_place ?? '',
             'permanent_address' => $user->permanent_address ?? '',
             'current_residence' => $user->current_residence ?? '',
@@ -101,10 +106,16 @@ class RegistrationForm extends Component
                 'master_name' => 'required|string|max:255',
                 'temple_name' => 'required|string|max:255',
             ]),
-            3 => $this->validate([
-                'gioi_dan_id'      => 'required|exists:gioi_dans,id',
-                'ordination_level' => 'required|string',
-            ]),
+            3 => $this->validate(array_merge(
+                [
+                    'gioi_dan_id'      => 'required|exists:gioi_dans,id',
+                    'ordination_level' => 'required|string',
+                ],
+                in_array($this->ordination_level, ['Tỳ kheo', 'Tỳ kheo ni']) ? [
+                    'sa_di_ordain_date' => 'required|date',
+                    'sa_di_gioi_dan'    => 'required|string|max:255',
+                ] : []
+            )),
             default => null,
         };
 
@@ -137,13 +148,17 @@ class RegistrationForm extends Component
                 'gender'           => $this->gender,
                 'birth_date'       => $this->birth_date,
                 'id_card_number'   => $this->id_card_number,
+                'id_card_date'     => $this->id_card_date ?: null,
                 'native_place'     => $this->native_place,
                 'permanent_address'=> $this->permanent_address,
                 'current_residence'=> $this->current_residence,
                 'education_level'  => $this->education_level,
                 'buddhist_education'=> $this->buddhist_education,
-                'ordain_date'      => $this->ordain_date ?: null,
-                'ordain_temple'    => $this->ordain_temple,
+                'ordain_date'       => $this->ordain_date ?: null,
+                'ordain_temple'     => $this->ordain_temple,
+                'sa_di_ordain_date' => $this->sa_di_ordain_date ?: null,
+                'sa_di_gioi_dan'    => $this->sa_di_gioi_dan ?: null,
+                'sa_di_tinh'        => $this->sa_di_tinh ?: null,
                 'master_name'      => $this->master_name,
                 'temple_name'      => $this->temple_name,
                 'ordination_level' => $this->ordination_level,
@@ -182,6 +197,7 @@ class RegistrationForm extends Component
             'gender'            => $app->gender,
             'birth_date'        => $app->birth_date?->format('Y-m-d') ?? '',
             'id_card_number'    => $app->id_card_number ?? '',
+            'id_card_date'      => $app->id_card_date?->format('Y-m-d') ?? '',
             'native_place'      => $app->native_place ?? '',
             'permanent_address' => $app->permanent_address ?? '',
             'current_residence' => $app->current_residence ?? '',
@@ -189,6 +205,9 @@ class RegistrationForm extends Component
             'buddhist_education'=> $app->buddhist_education ?? '',
             'ordain_date'       => $app->ordain_date?->format('Y-m-d') ?? '',
             'ordain_temple'     => $app->ordain_temple ?? '',
+            'sa_di_ordain_date' => $app->sa_di_ordain_date?->format('Y-m-d') ?? '',
+            'sa_di_gioi_dan'    => $app->sa_di_gioi_dan ?? '',
+            'sa_di_tinh'        => $app->sa_di_tinh ?? '',
             'master_name'       => $app->master_name,
             'temple_name'       => $app->temple_name,
             'ordination_level'  => $app->ordination_level,

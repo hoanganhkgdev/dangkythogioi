@@ -110,16 +110,20 @@
                             <p class="mt-1 text-xs text-gray-400">Số trên thẻ Căn cước công dân (12 chữ số)</p>
                         </div>
                         <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Ngày cấp CCCD</label>
+                            <input type="date" wire:model="id_card_date" class="{{ $field }}">
+                        </div>
+                        <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Quê quán</label>
                             <input type="text" wire:model="native_place" placeholder="Tỉnh / Thành phố" class="{{ $field }}">
                         </div>
                         <div class="sm:col-span-2">
-                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Địa chỉ thường trú</label>
-                            <input type="text" wire:model="permanent_address" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành" class="{{ $field }}">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Địa chỉ thường trú <span class="text-gray-400 normal-case font-normal">(ghi rõ tên Tự viện)</span></label>
+                            <input type="text" wire:model="permanent_address" placeholder="VD: Chùa Phật Quang - 670 Mạc Cửu, Phường Rạch Giá, Tỉnh An Giang" class="{{ $field }}">
                         </div>
                         <div class="sm:col-span-2">
-                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Nơi ở hiện tại</label>
-                            <input type="text" wire:model="current_residence" placeholder="Để trống nếu giống thường trú" class="{{ $field }}">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Hiện tu học <span class="text-gray-400 normal-case font-normal">(ghi rõ tên Tự viện và địa chỉ)</span></label>
+                            <input type="text" wire:model="current_residence" placeholder="VD: Chùa Phật Quang - 670 Mạc Cửu, Phường Rạch Giá, Tỉnh An Giang" class="{{ $field }}">
                         </div>
                     </div>
                 </div>
@@ -148,14 +152,14 @@
                             <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Nơi xuất gia</label>
                             <input type="text" wire:model="ordain_temple" placeholder="Tên chùa, tỉnh/thành" class="{{ $field }}">
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Hòa thượng Bổn sư <span class="text-red-400">*</span></label>
-                            <input type="text" wire:model="master_name" placeholder="Pháp danh Bổn sư" class="{{ $field }}">
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Bổn sư <span class="text-red-400">*</span> <span class="text-gray-400 normal-case font-normal">(ghi rõ phẩm vị, pháp danh và địa chỉ Tự viện)</span></label>
+                            <input type="text" wire:model="master_name" placeholder="VD: Hòa thượng Thích Minh Nhẫn - Chùa Phật Quang, Kiên Giang" class="{{ $field }}">
                             @error('master_name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Chùa / Cơ sở hiện tại <span class="text-red-400">*</span></label>
-                            <input type="text" wire:model="temple_name" placeholder="Tên chùa đang tu học" class="{{ $field }}">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Chùa của Bổn sư <span class="text-red-400">*</span></label>
+                            <input type="text" wire:model="temple_name" placeholder="VD: Chùa Phật Quang, 83 Quang Trung, phường Rạch Giá, Kiên Giang" class="{{ $field }}">
                             @error('temple_name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
                         </div>
                     </div>
@@ -207,6 +211,35 @@
                         @endif
                         @error('ordination_level') <p class="mt-2 text-xs text-red-500">{{ $message }}</p> @enderror
                     </div>
+
+                    {{-- Thông tin thọ giới Sa di (chỉ hiện khi chọn Tỳ kheo / Tỳ kheo ni) --}}
+                    @if(in_array($ordination_level, ['Tỳ kheo', 'Tỳ kheo ni']))
+                    <div class="mt-6 p-4 rounded-2xl bg-amber-50 border border-amber-200">
+                        <h3 class="text-sm font-bold text-amber-800 mb-4 uppercase tracking-wide">Thông tin thọ giới Sa di</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                    Ngày thọ giới Sa di <span class="text-red-400">*</span>
+                                </label>
+                                <input type="date" wire:model="sa_di_ordain_date" class="{{ $field }}">
+                                @error('sa_di_ordain_date') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                    Tên Giới đàn Tôn hiệu <span class="text-red-400">*</span>
+                                </label>
+                                <input type="text" wire:model="sa_di_gioi_dan" placeholder="VD: Đại giới đàn Huệ Nghiêm" class="{{ $field }}">
+                                @error('sa_di_gioi_dan') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">
+                                    Do Ban Trị sự GHPGVN Tỉnh/Thành tổ chức
+                                </label>
+                                <input type="text" wire:model="sa_di_tinh" placeholder="VD: Kiên Giang" class="{{ $field }}">
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 {{-- Step 4 --}}
